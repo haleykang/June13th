@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20px"
+    android:orientation="vertical"
+    tools:context="com.haley.test.june13th.MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="2017-06-13"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/toTotalAsyncTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="1~100까지 합구하기 예제"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/toThread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="예제 14-20[파일 내려받기]"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/toCountDown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="예제 14-27[카운트 다운]"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/toTestPD"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="ProgressDialog 사용 예제"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/toTestLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="자바 코드 : 레이아웃 구성"
+        android:textSize="15sp"/>
+
+
+</LinearLayout>
