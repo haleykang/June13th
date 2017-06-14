@@ -9,8 +9,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.IOException;
 
 public class TestPDATActivity extends Activity {
+
+    // 새로 만들 파일 이름을 상수로 정하기
+    // -> 나중에는 사용자한테 입력 받아서 파일이름 정하기
+    public static final String MY_NEW_FILE = "my_new_file.txt";
+
+    // 사용자한테 파일 이름을 넘겨받아보자 -> 다이얼로그창 생성해서(전면 수정)
+    private String mNewFileName = "";
 
     // 1. 전역 변수
     private Button mShowDialogBt;
@@ -18,6 +30,8 @@ public class TestPDATActivity extends Activity {
     private MyAsyncTask mMyAsyncTask = null;
     // 프로그레스 다이얼로그 객체 참조 변수
     private ProgressDialog mProgressDialog = null;
+    private Button mCreateBt;
+    private EditText mFileNameEt;
 
     // 2. 재정의 함수
     @Override
@@ -26,18 +40,37 @@ public class TestPDATActivity extends Activity {
         setContentView(R.layout.activity_test_pdat);
         myLog("onCreate() 실행");
 
+        // 방금 만든 createNewFile() 함수 실행
+
+
         // ctrl+shift+화살표 : 화살표 방향으로 한 단어 선택
         // ctrl+backspace : 커서 오른쪽 단어 삭제
 
         this.mContext = this;
         this.mShowDialogBt = (Button)this.findViewById(R.id.showDialogBt);
+        this.mCreateBt = (Button)this.findViewById(R.id.BtCreateNewFile);
+        this.mFileNameEt = (EditText)this.findViewById(R.id.EtInputFileName);
 
         this.mShowDialogBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myLog("버튼 클릭");
+                myLog("작업 진행 상황 출력 버튼 클릭");
                 mMyAsyncTask = new MyAsyncTask();
                 mMyAsyncTask.execute();
+            }
+        });
+
+        this.mCreateBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myLog("파일 생성 버튼 클릭");
+
+                try {
+                    createNewFile();
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
@@ -137,5 +170,54 @@ public class TestPDATActivity extends Activity {
     // 3. 사용자 정의 함수
     public void myLog(String ob) {
         Log.v("*TestPDATActivity*", ob);
+    }
+
+    // 새로운 파일을 생성해주는 함수 만들기
+    public void createNewFile() throws IOException {
+
+        // throws로 예외상황을 넘긴 경우, createNewFile() 함수를 호출하는 쪽에서
+        // 꼭 try~catch() 블럭을 만들어야함
+
+        // 1. 파일을 만들 디렉토리 패스(상대 경로)를 읽어와서 변수에 저장
+        File relativePath = this.getFilesDir();
+
+        // 2. 절대 경로를 읽어와서 변수에 저장
+        String absolutePath = relativePath.getAbsolutePath();
+        myLog("파일이 저장될 디렉토리의 절대 경로 : " + absolutePath);
+
+        mNewFileName = mFileNameEt.getText().toString();
+
+        if(mNewFileName != null && mNewFileName.trim().length() != 0) {
+
+            // 3. 파일을 만들때 사용할 파일 객체 생성 : 위에서 만든 절대 경로 사용
+            File myNewFile = new File(absolutePath + "/" + mNewFileName);
+
+            // 4.File 클래스가 갖고 있는 createNewFile() 함수를 실행하면 파일 생성
+            // createNewFile() 함수의 반환 값을 보관할 임시 변수
+            boolean temp;
+
+            // createNewFile() 함수를 실행해서 절대 경로에 새로운 파일 생성
+            temp = myNewFile.createNewFile();
+
+            // createNewFile() 함수가 true인 경우 - 파일을 새로 생성함
+            // false 값을 준 경우 - 파일이 이미 있는 경우
+            if(temp == true) {
+                myLog(mNewFileName + " 파일 생성 성공");
+                Toast.makeText(TestPDATActivity.this, mNewFileName + " - 파일 생성"
+                        , Toast.LENGTH_SHORT).show();
+
+            } else {
+                myLog(mNewFileName + " 파일이 이미 존재합니다.");
+                Toast.makeText(TestPDATActivity.this, mNewFileName + " - 이미 존재하는 파일입니다."
+                        , Toast.LENGTH_SHORT).show();
+
+            }
+
+
+        } else {
+            Toast.makeText(TestPDATActivity.this, "파일 이름을 입력하세요.", Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 }
